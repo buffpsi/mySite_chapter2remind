@@ -2,6 +2,7 @@ package com.mysite.sbb.question;
 
 import com.mysite.sbb.Answer.AnswerForm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,9 +20,11 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @GetMapping("/list")
-    public String lsit(Model model) {
-        List<Question> questionList = this.questionService.getList();
-        model.addAttribute("questionList", questionList);
+    public String lsit(Model model,@RequestParam(value="page", defaultValue="0") int page) {
+        //http://localhost:8080/question/list?page=0 처럼 GET 방식으로 요청된 URL에서 page값을 가져오기 위해
+        //@RequestParam(value="page", defaultValue="0") int page 매개변수가 list 메서드에 추가되었다. URL에 페이지 파라미터 page가 전달되지 않은 경우 디폴트 값으로 0이 되도록 설정했다.
+        Page<Question> paging = this.questionService.getList(page);
+        model.addAttribute("paging", paging);
         return "question_list";
     }
 
