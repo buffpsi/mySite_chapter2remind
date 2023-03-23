@@ -29,4 +29,5 @@ public class Question {
 //    이때 질문을 삭제하면 그에 달린 답변들도 모두 함께 삭제하기 위해서 @OneToMany의 속성으로 cascade = CascadeType.REMOVE를 사용했다.
     private List<Answer> answerList;
 
+
 }
