@@ -1,5 +1,6 @@
 package com.mysite.sbb.question;
 
+import com.mysite.sbb.user.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,11 +28,12 @@ public class QuestionService {
         }
 
     }
-    public void create(String subject, String content) {
+    public void create(String subject, String content, SiteUser user) {
         Question q = new Question();
         q.setSubject(subject);
         q.setContent(content);
         q.setCreateDate(LocalDateTime.now());
+        q.setAuthor(user);
         this.questionRepository.save(q);
     }
     public Page<Question> getList(int page) {
@@ -41,8 +43,14 @@ public class QuestionService {
         //page는 조회할 페이지의 번호이고, 10은 한페이지에 보여줄 게시물 갯수
         return this.questionRepository.findAll(pageable);
     }
-//    public List<Question> getList(){
-//        return this.questionRepository.findAll();
-//    }
+    public void modify(Question question, String subject, String content) {
+        question.setSubject(subject);
+        question.setContent(content);
+        question.setModifyDate(LocalDateTime.now());
+        this.questionRepository.save(question);
+    }
+    public void delete(Question question) {
+        this.questionRepository.delete(question);
+    }
 
 }
